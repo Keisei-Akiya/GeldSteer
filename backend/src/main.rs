@@ -1,24 +1,24 @@
-use axum::{Json, Router, routing::get};
-use serde::Serialize;
+use axum::Router;
+use dotenvy::dotenv;
 
-#[derive(Serialize)]
-struct Message {
-    message: String,
-}
+mod core;
+mod domains;
+mod shared;
+
+use crate::core::database::init_db;
+use crate::domains::catalog::catalog_routes;
 
 #[tokio::main]
 async fn main() {
-    // 1. ルーティングの設定
-    let app = Router::new().route("/", get(handler));
+    dotenv().ok();
 
-    // 2. サーバーの起動
+    let pool = init_db().await;
+
+    // TODO: Register other domain routes (accounts, portfolio) when they are implemented
+    let app = Router::new()
+        .nest("/api/v1/catalog", catalog_routes(pool));
+
     let listener = tokio::net::TcpListener::bind("0.0.0.0:8000").await.unwrap();
     println!("Server running on http://localhost:8000");
     axum::serve(listener, app).await.unwrap();
-}
-
-async fn handler() -> Json<Message> {
-    Json(Message {
-        message: "Hello, Rust API!".to_string(),
-    })
 }
