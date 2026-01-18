@@ -5,6 +5,8 @@ use axum::{
     response::IntoResponse,
 };
 
+use validator::Validate;
+
 use crate::core::database::DbPool;
 use crate::core::error::{AppError, AppResult};
 use crate::domains::accounts::schema::{CreateAccountRequest, UpdateAccountRequest};
@@ -14,6 +16,7 @@ pub async fn create_account(
     State(pool): State<DbPool>,
     Json(payload): Json<CreateAccountRequest>,
 ) -> AppResult<impl IntoResponse> {
+    payload.validate()?;
     let account = service::create_account(&pool, payload.name, payload.email).await?;
     Ok((StatusCode::CREATED, Json(account)))
 }
@@ -38,6 +41,7 @@ pub async fn update_account(
     Path(id): Path<String>,
     Json(payload): Json<UpdateAccountRequest>,
 ) -> AppResult<impl IntoResponse> {
+    payload.validate()?;
     let account = service::update_account(&pool, &id, payload.name, payload.email).await?;
     Ok(Json(account))
 }
