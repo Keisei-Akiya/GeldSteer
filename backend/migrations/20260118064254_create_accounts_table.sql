@@ -1,0 +1,14 @@
+-- Add migration script here
+CREATE TABLE accounts (
+    id TEXT PRIMARY KEY NOT NULL,
+    name TEXT NOT NULL UNIQUE,
+    email TEXT NOT NULL UNIQUE,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TRIGGER IF NOT EXISTS update_accounts_modtime
+AFTER UPDATE ON accounts
+BEGIN
+    UPDATE accounts SET updated_at = CURRENT_TIMESTAMP WHERE id = old.id;
+END;
