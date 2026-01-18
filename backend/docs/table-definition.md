@@ -18,7 +18,7 @@
 | カラム名 | 型 | 制約 | 説明 |
 | :--- | :--- | :--- | :--- |
 | `id` | VARCHAR(21) | PRIMARY KEY | NanoID |
-| `username` | VARCHAR(100) | NOT NULL UNIQUE | ユーザー名 |
+| `name` | VARCHAR(100) | NOT NULL UNIQUE | ユーザー名 |
 | `email` | VARCHAR(255) | NOT NULL UNIQUE | メールアドレス |
 | `created_at` | TIMESTAMP | NOT NULL DEFAULT CURRENT_TIMESTAMP | |
 | `updated_at` | TIMESTAMP | NOT NULL DEFAULT CURRENT_TIMESTAMP | |
@@ -49,7 +49,7 @@
 | `created_at` | TIMESTAMP | NOT NULL DEFAULT CURRENT_TIMESTAMP | |
 | `updated_at` | TIMESTAMP | NOT NULL DEFAULT CURRENT_TIMESTAMP | |
 
-### 2.4 `user_asset_grouping` (ユーザー別グルーピング設定)
+### 2.4 `user_asset_groupings` (ユーザー別グルーピング設定)
 
 「どの銘柄を、どの資産クラスとして扱うか」をユーザーごとに定義する紐付け表。
 
@@ -85,17 +85,7 @@
 ## 4. 特徴
 
 - **マルチユーザー対応**: `account_id` により、ユーザー間でのデータ混同を防ぎます。
-- **自由なグルーピング**: `user_asset_grouping` を通じて、ユーザーAはVTIを「米国株」に、ユーザーBはVTIを「先進国株」に分類することが可能です。
-- **計算の整合性**: `assets` に入っている金額を `user_asset_grouping` 経由で `asset_categories` ごとに集計することで、リバランス計算を行います。
+- **自由なグルーピング**: `user_asset_groupings` を通じて、ユーザーAはVTIを「米国株」に、ユーザーBはVTIを「先進国株」に分類することが可能です。
+- **計算の整合性**: `assets` に入っている金額を `user_asset_groupings` 経由で `asset_categories` ごとに集計することで、リバランス計算を行います。
 
 ---
-
-### 次のステップ
-
-テーブル定義が確定しました。
-
-1. **SQLマイグレーションファイルの作成**: この定義を元に、実際の `CREATE TABLE` 文を `.sql` 形式で出力しますか？
-2. **NanoID実装（Rust）**: 共通IDとなるハイフンなしNanoIDの生成関数を `src/utils/id.rs` に実装しますか？
-3. **Rustモデルの再定義**: この最終定義に合わせて、Rust側の構造体（Model）を修正しますか？
-
-どれから着手しましょうか。
