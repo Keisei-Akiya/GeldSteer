@@ -1,0 +1,4 @@
+# インポートをアルファベット順に並べ替え
+reorder_imports = true
+# 1行の最大長
+max_width = 100

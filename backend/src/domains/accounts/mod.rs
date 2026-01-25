@@ -5,6 +5,7 @@ pub mod schema;
 pub mod service;
 
 use crate::core::database::DbPool;
+use crate::domains::accounts::handler::AccountHandler;
 use axum::{
     Router,
     routing::{get, post},
@@ -12,15 +13,12 @@ use axum::{
 
 pub fn account_routes(pool: DbPool) -> Router {
     Router::new()
-        .route(
-            "/",
-            post(handler::create_account).get(handler::list_accounts),
-        )
+        .route("/", post(AccountHandler::create).get(AccountHandler::list))
         .route(
             "/{id}",
-            get(handler::get_account)
-                .put(handler::update_account)
-                .delete(handler::delete_account),
+            get(AccountHandler::get)
+                .put(AccountHandler::update)
+                .delete(AccountHandler::delete),
         )
         .with_state(pool)
 }
