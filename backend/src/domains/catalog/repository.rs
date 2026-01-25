@@ -16,7 +16,9 @@ pub async fn create(pool: &DbPool, asset: &AssetMaster) -> AppResult<AssetMaster
     .execute(pool)
     .await?;
 
-    find_by_id(pool, &asset.id).await?.ok_or_else(|| AppError::NotFound("Created asset not found".into()))
+    find_by_id(pool, &asset.id)
+        .await?
+        .ok_or_else(|| AppError::NotFound("Created asset not found".into()))
 }
 
 pub async fn find_all(pool: &DbPool) -> AppResult<Vec<AssetMaster>> {
@@ -48,8 +50,13 @@ pub async fn find_by_id(pool: &DbPool, id: &str) -> AppResult<Option<AssetMaster
     Ok(asset)
 }
 
-pub async fn update(pool: &DbPool, id: &str, name: &str, ticker_symbol: Option<String>) -> AppResult<AssetMaster> {
-        sqlx::query(
+pub async fn update(
+    pool: &DbPool,
+    id: &str,
+    name: &str,
+    ticker_symbol: Option<String>,
+) -> AppResult<AssetMaster> {
+    sqlx::query(
         r#"
         UPDATE asset_master
         SET name = ?, ticker_symbol = ?
@@ -62,7 +69,9 @@ pub async fn update(pool: &DbPool, id: &str, name: &str, ticker_symbol: Option<S
     .execute(pool)
     .await?;
 
-    find_by_id(pool, id).await?.ok_or(AppError::NotFound("Asset not found after update".into()))
+    find_by_id(pool, id)
+        .await?
+        .ok_or(AppError::NotFound("Asset not found after update".into()))
 }
 
 pub async fn delete(pool: &DbPool, id: &str) -> AppResult<()> {
@@ -72,7 +81,10 @@ pub async fn delete(pool: &DbPool, id: &str) -> AppResult<()> {
         .await?;
 
     if result.rows_affected() == 0 {
-        return Err(AppError::NotFound(format!("Asset with id {} not found", id)));
+        return Err(AppError::NotFound(format!(
+            "Asset with id {} not found",
+            id
+        )));
     }
 
     Ok(())
