@@ -2,7 +2,7 @@ use crate::shared::validation::validate_non_blank;
 use serde::Deserialize;
 use validator::Validate;
 
-#[derive(Deserialize, Validate)]
+#[derive(Deserialize, Validate, utoipa::ToSchema)]
 pub struct CreateAccountRequest {
     #[validate(custom(
         function = "validate_non_blank",
@@ -13,7 +13,7 @@ pub struct CreateAccountRequest {
     pub email: String,
 }
 
-#[derive(Deserialize, Validate)]
+#[derive(Deserialize, Validate, utoipa::ToSchema)]
 pub struct UpdateAccountRequest {
     #[validate(custom(
         function = "validate_non_blank",
