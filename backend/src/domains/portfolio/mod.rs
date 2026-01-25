@@ -5,6 +5,9 @@ pub mod schema;
 pub mod service;
 
 use crate::core::database::DbPool;
+use crate::domains::portfolio::handler::{
+    AssetCategoryHandler, AssetGroupingHandler, AssetHandler,
+};
 use axum::{
     Router,
     routing::{get, post},
@@ -15,35 +18,35 @@ pub fn portfolio_routes(pool: DbPool) -> Router {
         // Categories
         .route(
             "/categories",
-            post(handler::create_category).get(handler::list_categories),
+            post(AssetCategoryHandler::create).get(AssetCategoryHandler::list),
         )
         .route(
             "/categories/{id}",
-            get(handler::get_category)
-                .put(handler::update_category)
-                .delete(handler::delete_category),
+            get(AssetCategoryHandler::get)
+                .put(AssetCategoryHandler::update)
+                .delete(AssetCategoryHandler::delete),
         )
         // Groupings
         .route(
             "/groupings",
-            post(handler::create_grouping).get(handler::list_groupings),
+            post(AssetGroupingHandler::create).get(AssetGroupingHandler::list),
         )
         .route(
             "/groupings/{id}",
-            get(handler::get_grouping)
-                .put(handler::update_grouping)
-                .delete(handler::delete_grouping),
+            get(AssetGroupingHandler::get)
+                .put(AssetGroupingHandler::update)
+                .delete(AssetGroupingHandler::delete),
         )
         // Assets
         .route(
             "/assets",
-            post(handler::create_asset).get(handler::list_assets),
+            post(AssetHandler::create).get(AssetHandler::list),
         )
         .route(
             "/assets/{id}",
-            get(handler::get_asset)
-                .put(handler::update_asset)
-                .delete(handler::delete_asset),
+            get(AssetHandler::get)
+                .put(AssetHandler::update)
+                .delete(AssetHandler::delete),
         )
         .with_state(pool)
 }
