@@ -5,7 +5,7 @@ pub mod schema;
 pub mod service;
 
 use crate::core::database::DbPool;
-use crate::domains::catalog::handler::AssetMasterHandler;
+
 use axum::{
     Router,
     routing::{get, post},
@@ -13,15 +13,12 @@ use axum::{
 
 pub fn catalog_routes(pool: DbPool) -> Router {
     Router::new()
-        .route(
-            "/",
-            post(AssetMasterHandler::create).get(AssetMasterHandler::list),
-        )
+        .route("/", post(handler::create_asset).get(handler::list_assets))
         .route(
             "/{id}",
-            get(AssetMasterHandler::get)
-                .put(AssetMasterHandler::update)
-                .delete(AssetMasterHandler::delete),
+            get(handler::get_asset)
+                .put(handler::update_asset)
+                .delete(handler::delete_asset),
         )
         .with_state(pool)
 }

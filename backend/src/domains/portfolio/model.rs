@@ -4,7 +4,7 @@ use rust_decimal::prelude::FromPrimitive;
 use serde::{Deserialize, Serialize};
 use sqlx::{FromRow, Row, sqlite::SqliteRow};
 
-#[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(Debug, Clone, Serialize, Deserialize, utoipa::ToSchema)]
 pub struct AssetCategory {
     pub id: String,
     pub account_id: String,
@@ -31,7 +31,7 @@ impl<'r> FromRow<'r, SqliteRow> for AssetCategory {
     }
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize, FromRow)]
+#[derive(Debug, Clone, Serialize, Deserialize, FromRow, utoipa::ToSchema)]
 pub struct UserAssetGrouping {
     pub id: String,
     pub account_id: String,
@@ -41,7 +41,7 @@ pub struct UserAssetGrouping {
     pub updated_at: DateTime<Utc>,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(Debug, Clone, Serialize, Deserialize, utoipa::ToSchema)]
 pub struct Asset {
     pub id: String,
     pub account_id: String,

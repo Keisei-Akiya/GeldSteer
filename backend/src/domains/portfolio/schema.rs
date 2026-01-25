@@ -4,7 +4,7 @@ use serde::Deserialize;
 use validator::Validate;
 
 // Asset Categories
-#[derive(Deserialize, Validate)]
+#[derive(Deserialize, Validate, utoipa::ToSchema)]
 pub struct CreateCategoryRequest {
     #[validate(custom(
         function = "validate_non_blank",
@@ -14,7 +14,7 @@ pub struct CreateCategoryRequest {
     pub target_ratio: Decimal,
 }
 
-#[derive(Deserialize, Validate)]
+#[derive(Deserialize, Validate, utoipa::ToSchema)]
 pub struct UpdateCategoryRequest {
     #[validate(custom(
         function = "validate_non_blank",
@@ -25,7 +25,7 @@ pub struct UpdateCategoryRequest {
 }
 
 // User Asset Groupings
-#[derive(Deserialize, Validate)]
+#[derive(Deserialize, Validate, utoipa::ToSchema)]
 pub struct CreateGroupingRequest {
     #[validate(custom(
         function = "validate_non_blank",
@@ -39,7 +39,7 @@ pub struct CreateGroupingRequest {
     pub category_id: String,
 }
 
-#[derive(Deserialize, Validate)]
+#[derive(Deserialize, Validate, utoipa::ToSchema)]
 pub struct UpdateGroupingRequest {
     #[validate(custom(
         function = "validate_non_blank",
@@ -49,7 +49,7 @@ pub struct UpdateGroupingRequest {
 }
 
 // Assets (Holdings)
-#[derive(Deserialize, Validate)]
+#[derive(Deserialize, Validate, utoipa::ToSchema)]
 pub struct CreateUserAssetRequest {
     #[validate(custom(
         function = "validate_non_blank",
@@ -59,7 +59,7 @@ pub struct CreateUserAssetRequest {
     pub current_amount: Decimal,
 }
 
-#[derive(Deserialize, Validate)]
+#[derive(Deserialize, Validate, utoipa::ToSchema)]
 pub struct UpdateUserAssetRequest {
     pub current_amount: Decimal,
 }

@@ -5,9 +5,7 @@ pub mod schema;
 pub mod service;
 
 use crate::core::database::DbPool;
-use crate::domains::portfolio::handler::{
-    AssetCategoryHandler, AssetGroupingHandler, AssetHandler,
-};
+
 use axum::{
     Router,
     routing::{get, post},
@@ -18,35 +16,35 @@ pub fn portfolio_routes(pool: DbPool) -> Router {
         // Categories
         .route(
             "/categories",
-            post(AssetCategoryHandler::create).get(AssetCategoryHandler::list),
+            post(handler::create_category).get(handler::list_categories),
         )
         .route(
             "/categories/{id}",
-            get(AssetCategoryHandler::get)
-                .put(AssetCategoryHandler::update)
-                .delete(AssetCategoryHandler::delete),
+            get(handler::get_category)
+                .put(handler::update_category)
+                .delete(handler::delete_category),
         )
         // Groupings
         .route(
             "/groupings",
-            post(AssetGroupingHandler::create).get(AssetGroupingHandler::list),
+            post(handler::create_grouping).get(handler::list_groupings),
         )
         .route(
             "/groupings/{id}",
-            get(AssetGroupingHandler::get)
-                .put(AssetGroupingHandler::update)
-                .delete(AssetGroupingHandler::delete),
+            get(handler::get_grouping)
+                .put(handler::update_grouping)
+                .delete(handler::delete_grouping),
         )
         // Assets
         .route(
             "/assets",
-            post(AssetHandler::create).get(AssetHandler::list),
+            post(handler::create_user_asset).get(handler::list_user_assets),
         )
         .route(
             "/assets/{id}",
-            get(AssetHandler::get)
-                .put(AssetHandler::update)
-                .delete(AssetHandler::delete),
+            get(handler::get_user_asset)
+                .put(handler::update_user_asset)
+                .delete(handler::delete_user_asset),
         )
         .with_state(pool)
 }
