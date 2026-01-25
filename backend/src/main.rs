@@ -3,6 +3,7 @@ use dotenvy::dotenv;
 
 mod core;
 mod domains;
+mod middleware;
 mod shared;
 
 use crate::core::database::init_db;
